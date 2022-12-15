@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\EstudiantesController;
 use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\ProductoVentaController;
+use App\Http\Controllers\VentaController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -26,8 +27,12 @@ Route::apiResource("estudiantes",EstudiantesController::class);
 Route::apiResource('productos',ProductoController::class)->except([
     'create', 'edit'
 ]); 
+Route::apiResource('sales',VentaController::class)->except([
+    'create', 'edit'
+]); 
 //Route::get("estudiantes",[EstudiantesController::class,'index']);
 Route::get('ventas/{id}',[ProductoVentaController::class,'show']);
+Route::post('ventas',[ProductoVentaController::class,'store']);
 
 Route::post("/register",[UserController::class,'register']);
 Route::post("login",[UserController::class,'login']);

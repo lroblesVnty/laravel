@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Venta;
 use Illuminate\Http\Request;
+use Illuminate\Database\QueryException;
 
 class VentaController extends Controller
 {
@@ -33,9 +34,13 @@ class VentaController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
-        //
+    public function store(Request $request){
+        try {
+            $venta=Venta::create($request->all());
+            return $venta;
+        } catch (QueryException $e) {
+            return response(['error' => true, 'message' => $e],409);
+        }
     }
 
     /**

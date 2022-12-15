@@ -6,6 +6,7 @@ use App\Models\Producto;
 use App\Models\Venta;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Database\QueryException;
 
 class ProductoVentaController extends Controller
 {
@@ -14,8 +15,7 @@ class ProductoVentaController extends Controller
         $ventas=Venta::all();
 
     }
-    public function show($id)
-    {
+    public function show($id){
         
         try {
             //$venta=Venta::findOrFail($id)->productos()->get();
@@ -26,5 +26,20 @@ class ProductoVentaController extends Controller
             //return response(['error' => true, 'message' => 'Sin coincidencias']);
         }
     }
+    public function store(Request $request){
+        try {
+            /*$venta=Venta::findOrFail($request->venta_id);
+            $venta->productos()->attach($request->products_id);
+            return $venta;*/
+           //?$venta = Venta::findOrFail($request->venta_id)->create($request->all());
+            //?$venta->buy()->attach($request->codecs);
+            $venta=Venta::create($request->all());
+            $venta->productos()->attach($request->products_id);
+            return $venta;
+        } catch (QueryException $e) {
+            return response(['error' => true, 'message' => $e],409);
+        }
+    }
+
 
 }
