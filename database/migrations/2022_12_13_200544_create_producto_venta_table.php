@@ -19,10 +19,13 @@ class CreateProductoVentaTable extends Migration
             $table->foreignId('venta_id')->constrained('ventas')
             ->onUpdate('cascade')
             ->onDelete('cascade');
+
+            $table->integer('producto_cantidad');
             
             $table->foreignId('producto_id')->constrained('productos')
             ->onUpdate('cascade')
             ->onDelete('cascade');
+
         });
     }
 
