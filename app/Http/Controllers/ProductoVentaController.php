@@ -7,20 +7,24 @@ use App\Models\Venta;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\QueryException;
+use Illuminate\Support\Collection;
+use PHPUnit\Util\Json;
 
 class ProductoVentaController extends Controller
 {
     public function index(){
         $producto=Producto::all();
         $ventas=Venta::all();
+        $ventas=Venta::with('productos')->get();
 
     }
     public function show($id){
         
         try {
             //$venta=Venta::findOrFail($id)->productos()->get();
-            $venta=Venta::findOrFail($id)->with('productos')->first();
-            return $venta;
+           $venta=Venta::findOrFail($id)->with('productos')->first();
+          
+            return  $venta->makeHidden(['productos.pivot.updated_at', 'productos.pivot.created_at']);
         } catch (ModelNotFoundException $e) {
             return response(['error' => true, 'message' => 'Sin coincidencias'],204);
             //return response(['error' => true, 'message' => 'Sin coincidencias']);
@@ -34,7 +38,20 @@ class ProductoVentaController extends Controller
            //?$venta = Venta::findOrFail($request->venta_id)->create($request->all());
             //?$venta->buy()->attach($request->codecs);
             $venta=Venta::create($request->all());
-            $venta->productos()->attach($request->products_id);
+            $products_id=$request->products_id;
+            for($i=0 ; $i<count( $products_id) ; $i++){
+                $venta->productos()->attach($products_id[$i],[ 'producto_cantidad'=>$request->cantidad[$i] ]);
+            }
+           
+            //$venta->productos()->attach($request->products_id,['producto_cantidad' => $request->cantidad]);
+          
+            //$venta->productos()->attach($products_id);
+
+           /* $count_each_food_mapped = array_map(function ($item) {
+                return ['count' => $item];
+            }, $request->cantidad);*/
+          
+
             return $venta;
         } catch (QueryException $e) {
             return response(['error' => true, 'message' => $e],409);
