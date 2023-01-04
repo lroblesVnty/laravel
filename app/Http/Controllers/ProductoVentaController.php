@@ -22,8 +22,10 @@ class ProductoVentaController extends Controller
     public function show($id){
         
         try {
-            //$venta=Venta::findOrFail($id)->productos()->get();
-           $venta=Venta::findOrFail($id)->with('productos')->first();
+           //$venta=Venta::findOrFail($id)->productos()->get();
+           // $venta=Venta::findOrFail($id)->with('productos');
+            $venta=Venta::with('productos')->find($id);
+          
           
             return  $venta;
         } catch (ModelNotFoundException $e) {
@@ -39,10 +41,11 @@ class ProductoVentaController extends Controller
            //?$venta = Venta::findOrFail($request->venta_id)->create($request->all());
             //?$venta->buy()->attach($request->codecs);
             $venta=Venta::create($request->all());
-            $products_id=$request->products_id;
+            /*$products_id=$request->products_id;
             for($i=0 ; $i<count( $products_id) ; $i++){
                 $venta->productos()->attach($products_id[$i],[ 'producto_cantidad'=>$request->cantidad[$i] ]);
-            }
+            }*/
+            $venta->productos()->attach($request->products);
            
             //$venta->productos()->attach($request->products_id,['producto_cantidad' => $request->cantidad]);
           
