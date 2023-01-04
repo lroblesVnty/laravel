@@ -46,13 +46,14 @@ class ProductoController extends Controller
         $producto->save();*/
 
 
-       
-        try {
+        $producto=Producto::create($request->all());
+        return $producto;
+        /*try {
             $producto=Producto::create($request->all());
             return $producto;
         } catch (QueryException $e) {
             return response(['error' => true, 'message' => $e],409);
-        }
+        }*/
     }
 
     /**

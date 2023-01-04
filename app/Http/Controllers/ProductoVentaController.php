@@ -13,9 +13,10 @@ use PHPUnit\Util\Json;
 class ProductoVentaController extends Controller
 {
     public function index(){
-        $producto=Producto::all();
-        $ventas=Venta::all();
+        //$producto=Producto::all();
+        //$ventas=Venta::all();
         $ventas=Venta::with('productos')->get();
+        return $ventas;
 
     }
     public function show($id){
@@ -24,7 +25,7 @@ class ProductoVentaController extends Controller
             //$venta=Venta::findOrFail($id)->productos()->get();
            $venta=Venta::findOrFail($id)->with('productos')->first();
           
-            return  $venta->makeHidden(['productos.pivot.updated_at', 'productos.pivot.created_at']);
+            return  $venta;
         } catch (ModelNotFoundException $e) {
             return response(['error' => true, 'message' => 'Sin coincidencias'],204);
             //return response(['error' => true, 'message' => 'Sin coincidencias']);

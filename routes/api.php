@@ -33,6 +33,7 @@ Route::apiResource('sales',VentaController::class)->except([
 //Route::get("estudiantes",[EstudiantesController::class,'index']);
 Route::get('ventas/{id}',[ProductoVentaController::class,'show']);
 Route::post('ventas',[ProductoVentaController::class,'store']);
+Route::get('ventas',[ProductoVentaController::class,'index']);
 
 Route::post("/register",[UserController::class,'register']);
 Route::post("login",[UserController::class,'login']);
