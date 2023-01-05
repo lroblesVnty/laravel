@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreProductoVentaRequest;
 use App\Models\Producto;
 use App\Models\Venta;
 use Illuminate\Http\Request;
@@ -33,7 +34,13 @@ class ProductoVentaController extends Controller
             //return response(['error' => true, 'message' => 'Sin coincidencias']);
         }
     }
-    public function store(Request $request){
+     /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \App\Http\Requests\StoreProductoVentaRequest  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(StoreProductoVentaRequest $request){
         try {
             /*$venta=Venta::findOrFail($request->venta_id);
             $venta->productos()->attach($request->products_id);
