@@ -16,7 +16,7 @@ class ProductoVentaController extends Controller
     public function index(){
         //$producto=Producto::all();
         //$ventas=Venta::all();
-        $ventas=Venta::with('productos')->get();
+        $ventas=Venta::with('productos')->get(['id','created_at AS fecha_venta','total','user_id']);
         return $ventas;
 
     }
@@ -25,7 +25,7 @@ class ProductoVentaController extends Controller
         try {
            //$venta=Venta::findOrFail($id)->productos()->get();
            // $venta=Venta::findOrFail($id)->with('productos');
-            $venta=Venta::with('productos')->find($id);
+            $venta=Venta::with('productos')->find($id,['id','created_at as fecha_venta','total','user_id']);
           
           
             return  $venta;
