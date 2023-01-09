@@ -11,6 +11,9 @@ class Venta extends Model
     use HasFactory;
     protected $hidden = ['updated_at'];
     protected $fillable=["user_id","total"];
+    protected $casts = [
+        'fecha_venta' => 'date:d-m-Y H:i:s'
+    ];
     
     /**
      * Prepare a date for array / JSON serialization.
@@ -20,10 +23,13 @@ class Venta extends Model
      */
     protected function serializeDate(DateTimeInterface $date)
     {
-        return $date->format('d-m-Y H:i:s');
+        return $date->format('d-m-Y');
     }
     public function productos(){
        // return $this->belongsToMany(Producto::class,'producto_venta')->withTimestamps()->withPivot('producto_cantidad');
         return $this->belongsToMany(Producto::class,'producto_venta')->using(ProductoVenta::class)->as('detalle')->withTimestamps()->withPivot('producto_cantidad');//using= modelo personalizado con la tabla pivot para exlcluir los timestamps
+    }
+    public function user(){
+        return $this->belongsTo(User::class);
     }
 }

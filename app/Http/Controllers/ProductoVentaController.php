@@ -16,7 +16,9 @@ class ProductoVentaController extends Controller
     public function index(){
         //$producto=Producto::all();
         //$ventas=Venta::all();
-        $ventas=Venta::with('productos')->get(['id','created_at AS fecha_venta','total','user_id']);
+        $ventas=Venta::with('productos','user:id,name')->get(['id','created_at AS fecha_venta','total','user_id']);
+       // $ventas=Venta::with('productos','user')->get(['id','created_at AS fecha_venta','total','user_id']);
+       
         return $ventas;
 
     }
