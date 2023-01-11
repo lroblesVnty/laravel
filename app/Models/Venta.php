@@ -23,7 +23,7 @@ class Venta extends Model
      */
     protected function serializeDate(DateTimeInterface $date)
     {
-        return $date->format('d-m-Y');
+        return $date->format('d-m-Y H:i:s');
     }
     public function productos(){
        // return $this->belongsToMany(Producto::class,'producto_venta')->withTimestamps()->withPivot('producto_cantidad');

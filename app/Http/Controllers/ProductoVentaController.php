@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Collection;
 use PHPUnit\Util\Json;
+use Illuminate\Support\Facades\DB;
 
 class ProductoVentaController extends Controller
 {
@@ -27,12 +28,12 @@ class ProductoVentaController extends Controller
         try {
            //$venta=Venta::findOrFail($id)->productos()->get();
            // $venta=Venta::findOrFail($id)->with('productos');
-            $venta=Venta::with('productos')->find($id,['id','created_at as fecha_venta','total','user_id']);
+            $venta=Venta::with('productos','user:id,name')->findOrFail($id,['id','created_at as fecha_venta','total','user_id']);
           
           
             return  $venta;
         } catch (ModelNotFoundException $e) {
-            return response(['error' => true, 'message' => 'Sin coincidencias'],204);
+            return response(['error' => true, 'message' => $e],204);
             //return response(['error' => true, 'message' => 'Sin coincidencias']);
         }
     }
@@ -55,6 +56,23 @@ class ProductoVentaController extends Controller
                 $venta->productos()->attach($products_id[$i],[ 'producto_cantidad'=>$request->cantidad[$i] ]);
             }*/
             $venta->productos()->attach($request->products);
+            /*Producto::where('id', $request->products)
+            ->update([
+                "stock" => DB::table('producto_venta')->select('producto_cantidad')->where('producto_cantidad',)
+            ]);*/
+           
+            foreach($request->products as $key=>$val){
+                
+                Producto::where('id', $key)
+                ->decrement('stock', (int) $val['producto_cantidad']);
+                /*->update([
+                    "stock" => $val['producto_cantidad']->select(DB::raw('count(*) as user_count, status'))
+                    ->where('status', '<>', 1)
+                ]);*/
+            }
+           
+            
+          
            
             //$venta->productos()->attach($request->products_id,['producto_cantidad' => $request->cantidad]);
           
