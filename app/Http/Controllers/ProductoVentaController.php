@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\DB;
 class ProductoVentaController extends Controller
 {
     public function index(){
-        //$producto=Producto::all();
+        //$prodStock=Producto::all();
         //$ventas=Venta::all();
         $ventas=Venta::with('productos','user:id,name')->get(['id','created_at AS fecha_venta','total','user_id']);
        // $ventas=Venta::with('productos','user')->get(['id','created_at AS fecha_venta','total','user_id']);
@@ -48,6 +48,16 @@ class ProductoVentaController extends Controller
             /*$venta=Venta::findOrFail($request->venta_id);
             $venta->productos()->attach($request->products_id);
             return $venta;*/
+            foreach($request->products as $key=>$val){
+                //$prodStock=Producto::findOrFail($key)->first()->stock;
+                $product=Producto::findOrFail($key)->first(['stock','descripcion']);
+                $prodStock=$product->stock;
+                $prodName=$product->descripcion;
+                if (!($prodStock>=0 && $prodStock>=(int) $val['producto_cantidad'])) {
+                    return response(['success'=>false,'msg'=>'Producto "'.$prodName.'" agotado'],409);
+                }
+
+            }
            //?$venta = Venta::findOrFail($request->venta_id)->create($request->all());
             //?$venta->buy()->attach($request->codecs);
             $venta=Venta::create($request->all());
