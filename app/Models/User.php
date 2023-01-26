@@ -30,7 +30,12 @@ class User extends Authenticatable
         'created_at',
          'updated_at'
     ];
+
     public function ventas(){
         return $this->hasMany(Venta::class);
+    }
+
+    public function equipo(){
+        return $this->hasOne(Equipo::class);
     }
 }

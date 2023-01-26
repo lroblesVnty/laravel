@@ -80,9 +80,8 @@ class ProductoVentaController extends Controller
                     ->where('status', '<>', 1)
                 ]);*/
             }
-           
             
-          
+            
            
             //$venta->productos()->attach($request->products_id,['producto_cantidad' => $request->cantidad]);
           
@@ -99,5 +98,10 @@ class ProductoVentaController extends Controller
         }
     }
 
+    public function totByDate(){
+        //$ventas=Venta::select(DB::raw("sum(total) as total"),DB::raw("DATE_FORMAT(created_at,'%d-%m-%Y') as fechaVenta"))->groupBy(DB::raw("DATE_FORMAT(created_at, '%d-%m-%Y')"))->get();  
+        $ventas=Venta::selectRaw('DATE_FORMAT(created_at, "%d-%m-%Y") as fechaVenta, SUM(total) as total')->groupBy('fechaVenta')->get();
+        return $ventas;
+    }
 
 }
