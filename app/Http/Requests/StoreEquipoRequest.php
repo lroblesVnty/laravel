@@ -31,7 +31,7 @@ class StoreEquipoRequest extends FormRequest
             'fechaCompra'=>'required|date',
             'costo'=>'required|numeric',
             'procesador'=>'required|string',
-            'ram'=>'numeric|required_if:tipo,PC',
+            'ram'=>'integer|required_if:tipo,PC',
             'hdd'=>'string|required_if:tipo,PC',
             'software'=>'required|string',
             'proveedor_id'=>'required|integer|exists:proveedors,id',
