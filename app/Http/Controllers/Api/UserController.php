@@ -64,7 +64,7 @@ class UserController extends Controller{
     }
     public function userProfile(){
         
-        return response()->json(["error"=>false,"data"=>auth()->user()],200);
+        return response()->json(["success"=>true,"data"=>auth()->user()],200);
     
     }
     public function logout(User $user){

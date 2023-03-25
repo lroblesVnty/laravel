@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\EquipoController;
 use App\Http\Controllers\EstudiantesController;
+use App\Http\Controllers\FileController;
 use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\ProductoVentaController;
 use App\Http\Controllers\ProveedorController;
@@ -53,8 +54,20 @@ Route::post("/register",[UserController::class,'register']);
 Route::post("login",[UserController::class,'login']);
 Route::get("users",[UserController::class,'index']);
 
+//Route::post("file/upload",[FileController::class,'store']);
+Route::get("file/view/{image}",[FileController::class,'find']);
+Route::apiResource('file',FileController::class)->except([
+    'create', 'edit'
+]); 
+
+
 
 Route::group(['middleware'=>["auth:sanctum"]],function(){
     Route::get('user-profile',[UserController::class,'userProfile']);
     Route::get('logout',[UserController::class,'logout']);
 });
+
+/*Route::group(['prefix'=>'admin','middleware'=>["auth:sanctum"]],function(){//prefix is for each route =/admin/user-profile
+    Route::get('user-profile',[UserController::class,'userProfile']);
+    Route::get('logout',[UserController::class,'logout']);
+});*/
