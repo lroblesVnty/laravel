@@ -4,6 +4,10 @@ use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\EquipoController;
 use App\Http\Controllers\EstudiantesController;
 use App\Http\Controllers\FileController;
+use App\Http\Controllers\MembresiaController;
+use App\Http\Controllers\MiembroController;
+use App\Http\Controllers\PagoController;
+use App\Http\Controllers\PlanController;
 use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\ProductoVentaController;
 use App\Http\Controllers\ProveedorController;
@@ -42,7 +46,23 @@ Route::apiResource('proveedor',ProveedorController::class)->except([
 
 Route::apiResource('equipo',EquipoController::class)->except([
     'create', 'edit'
+]);
+
+Route::apiResource('miembro',MiembroController::class)->except([
+    'create', 'edit'
 ]); 
+
+Route::apiResource('membresia',MembresiaController::class)->except([
+    'create', 'edit'
+]);
+
+Route::apiResource('pago',PagoController::class)->except([
+    'create', 'edit'
+]); 
+
+
+Route::get('plan',[PlanController::class,'index']);
+Route::post('plan',[PlanController::class,'store']);
 
 //Route::get("estudiantes",[EstudiantesController::class,'index']);
 Route::get('ventas/{id}',[ProductoVentaController::class,'show']);

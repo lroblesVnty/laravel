@@ -58,7 +58,7 @@ class UserController extends Controller{
         $token=$user->createToken('auth-token')->plainTextToken;
         $cookie=cookie('cookie_token',$token,60*24); //60*24= expiracion
 
-        return response()->json(["error"=>false,"msg"=>"Login exitoso","data"=>auth()->user(),"access_token"=>$token],200)->withCookie($cookie);
+        return response()->json(["success"=>true,"msg"=>"Login exitoso","data"=>auth()->user(),"access_token"=>$token],200)->withCookie($cookie);
 
     
     }
@@ -74,7 +74,7 @@ class UserController extends Controller{
     
        // auth()->user()->tokens()->delete();
         $cookie = Cookie::forget('cookie_token');
-        return response()->json(["error"=>false,"msg"=>"Logout exitoso"])->withCookie($cookie);
+        return response()->json(["success"=>true,"msg"=>"Logout exitoso"])->withCookie($cookie);
 
     }
     
