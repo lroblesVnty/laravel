@@ -74,6 +74,10 @@ Route::post("/register",[UserController::class,'register']);
 Route::post("login",[UserController::class,'login']);
 Route::get("users",[UserController::class,'index']);
 
+Route::get("miembro/{id}/status",[MiembroController::class,'checkStatusPlan']);
+
+
+
 //Route::post("file/upload",[FileController::class,'store']);
 Route::get("file/view/{image}",[FileController::class,'find']);
 Route::apiResource('file',FileController::class)->except([

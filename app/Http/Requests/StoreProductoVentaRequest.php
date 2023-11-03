@@ -31,6 +31,12 @@ class StoreProductoVentaRequest extends FormRequest
             'products'=>'required|array',
             'products.*.producto_cantidad'=>'required|numeric|min:1'
         ];
+        /*
+            {"user_id":1,
+            "total":30.5,
+            "products":{"1":{"producto_cantidad":1}}
+            }
+        */
     }
     protected function failedValidation(Validator $validator){//personalizar responseException
         throw new HttpResponseException(
