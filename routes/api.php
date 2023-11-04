@@ -75,6 +75,7 @@ Route::post("login",[UserController::class,'login']);
 Route::get("users",[UserController::class,'index']);
 
 Route::get("miembro/{id}/status",[MiembroController::class,'checkStatusPlan']);
+Route::get("status/miembro",[MiembroController::class,'statusMembers']);
 
 
 

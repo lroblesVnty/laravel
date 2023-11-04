@@ -91,20 +91,47 @@ class MiembroController extends Controller{
         ->groupBy('miembro_id')
         ->havingRaw('DATE(max(fecha_pago))<?', [$date])
         ->get();
-        //return $resp;
+       
         setlocale(LC_TIME, 'es_ES.UTF-8'); 
         Carbon::setLocale('es');
         //$lastPayDate = Carbon::parse($resp[0]->lastPayDate)->format('d-F-Y');
-        $lastPayDate= Carbon::parse($resp[0]->lastPayDate)->isoFormat('D\-MMMM\-Y');
-
+       
         $count = $resp->count();
         if ($count==0) {
             return response(['success'=>true,'status'=>'plan activo']);
         }
+        $lastPayDate= Carbon::parse($resp[0]->lastPayDate)->isoFormat('D\-MMMM\-Y');
+
         return response(['success'=>false,'status'=>'inactivo','lastPayDate'=>$lastPayDate]);
         //return $resp;
 
         //>pagos()->where('fecha_pago', '<', $date)->get()
+    }
+
+    public function statusMembers(){
+        DB::statement("SET SQL_MODE=''");
+        $members = DB::table('pagos')
+        ->rightjoin('miembros', 'miembros.id', '=', 'pagos.miembro_id')
+        ->select('miembros.id','nombre','edad','tel',DB::raw('if((DATE(max(pagos.fecha_pago))<DATE(NOW())),"inactivo",if(pagos.fecha_pago IS NULL,"inactivo","activo")) as statusPlan'))
+        ->groupByRaw('miembros.id,nombre,edad,tel')
+        ->get();
+        $meb=$members->groupBy('miembro_id','miembros.id','nombre');
+        //https://stackoverflow.com/questions/40917189/laravel-syntax-error-or-access-violation-1055-error
+        $latestPosts = DB::table('pagos')
+        ->select('miembro_id', DB::raw('MAX(fecha_pago) as lastPayDate'))
+        ->groupBy('miembro_id');
+
+$users = DB::table('miembros')
+->leftjoinSub($latestPosts, 'status', function ($join) {
+ $join->on('miembros.id', '=', 'status.miembro_id');
+})->get();
+//*poner un if con select bajo el join
+            return $users; 
+       /*  $latestPosts = DB::table('pagos')
+        ->select('miembro_id', DB::raw('MAX(fecha_pago) as lastPayDate'))
+        ->groupBy('miembro_id'); */
+
+      
     }
 
 }
