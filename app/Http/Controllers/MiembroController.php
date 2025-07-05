@@ -98,11 +98,11 @@ class MiembroController extends Controller{
        
         $count = $resp->count();
         if ($count==0) {
-            return response(['success'=>true,'status'=>'plan activo']);
+            return response(['success'=>true,'status'=>'plan activo','miembro'=>$miembro]);
         }
         $lastPayDate= Carbon::parse($resp[0]->lastPayDate)->isoFormat('D\-MMMM\-Y');
 
-        return response(['success'=>false,'status'=>'inactivo','lastPayDate'=>$lastPayDate]);
+        return response(['success'=>false,'status'=>'inactivo','lastPayDate'=>$lastPayDate,'miembro'=>$miembro]);
         //return $resp;
 
         //>pagos()->where('fecha_pago', '<', $date)->get()
@@ -132,6 +132,34 @@ $users = DB::table('miembros')
         ->groupBy('miembro_id'); */
 
       
+    }
+
+    public function plan() {
+
+        return Miembro::select(['miembros.id','miembros.nombre','membresias.nombre as tipo'])
+         ->join('plans', 'miembros.id', '=', 'plans.miembro_id')
+         ->join('membresias', 'membresias.id', '=', 'plans.membresia_id')->get();
+        
+         //*otra opcion para obtener el nombre de la membresia del usuario
+         //TODO quitar la tabla membresias y dejar solo la de planes
+        Miembro::with(['plan.membresia'])
+            ->get()
+            ->map(function ($miembro) {
+                return [
+                    'id' => $miembro->id,
+                    'nombre' => $miembro->tel,
+                    'tel' => $miembro->nombre,
+                    'tipo_membresia' => optional($miembro->plan->membresia)->nombre,
+                ];
+        });
+
+        Miembro::with([
+                'plan.membresia' => function ($query) {
+                    $query->select('id', 'nombre', 'costo');
+                }
+            ])->get(['id', 'nombre', 'tel', 'edad']);
+
+       
     }
 
 }

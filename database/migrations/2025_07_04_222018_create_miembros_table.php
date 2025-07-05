@@ -14,15 +14,16 @@ class CreateMiembrosTable extends Migration
     public function up()
     {
         Schema::create('miembros', function (Blueprint $table) {
-            $table->id();
+           $table->id();
             $table->timestamps();
             $table->string('nombre')->nullable(false);
-            $table->string('tel')->nullable(false);
+            $table->string('apellido')->nullable(false);
+            $table->string('tel')->nullable(false)->unique();;
             $table->tinyInteger('edad')->nullable(false);
-            
-
-
-
+            $table->tinyInteger('activo')->default(0); 
+            $table->foreignId('plan_id')->constrained('plans')
+            ->cascadeOnUpdate()
+            ->cascadeOnDelete();
         });
     }
 

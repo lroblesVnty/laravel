@@ -15,13 +15,11 @@ class CreatePlansTable extends Migration
     {
         Schema::create('plans', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('miembro_id')->constrained('miembros')
-            ->cascadeOnUpdate()
-            ->cascadeOnDelete();
-            $table->foreignId('membresia_id')->constrained('membresias')
-            ->cascadeOnUpdate()
-            ->cascadeOnDelete();
-            $table->string('status')->nullable(false);
+            $table->string('nombre_plan')->nullable(false)->unique();
+            $table->string('descripcion')->nullable(false);
+            $table->enum('frecuencia_pago', ['semanal', 'mensual', 'anual']);
+            $table->double('costo',8,2)->nullable(false);
+            $table->integer('duracion_dias')->nullable(false);
             $table->timestamps();
         });
     }

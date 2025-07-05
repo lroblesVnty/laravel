@@ -77,6 +77,8 @@ Route::get("users",[UserController::class,'index']);
 Route::get("miembro/{id}/status",[MiembroController::class,'checkStatusPlan']);
 Route::get("status/miembro",[MiembroController::class,'statusMembers']);
 
+Route::get("miembros/plan",[MiembroController::class,'plan']);
+
 
 
 //Route::post("file/upload",[FileController::class,'store']);

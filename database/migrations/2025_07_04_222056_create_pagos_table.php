@@ -11,13 +11,15 @@ class CreatePagosTable extends Migration
      *
      * @return void
      */
-    public function up(){
+    public function up()
+    {
         Schema::create('pagos', function (Blueprint $table) {
             $table->id();
             $table->timestamp('fecha_pago');
-            $table->foreignId('miembro_id')->constrained('miembros')
-            ->cascadeOnUpdate()
-            ->cascadeOnDelete();
+            $table->foreignId('miembro_id')->constrained('miembros');
+            $table->foreignId('plan_id')->constrained('plans');
+            $table->double('monto',8,2)->nullable(false);
+            $table->string('metodo_pago')->nullable(false);
             $table->timestamps();
         });
     }
