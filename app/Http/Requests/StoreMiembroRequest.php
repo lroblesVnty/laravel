@@ -25,8 +25,10 @@ class StoreMiembroRequest extends FormRequest
     {
         return [
             'nombre'=>'required|string|max:150|min:3|regex:/^[a-zA-ZÁ-ÿ\s]+$/',
+            'apellido'=>'required|string|max:150|min:3|regex:/^[a-zA-ZÁ-ÿ\s]+$/',
             'tel'=>'required|integer|digits:10|unique:miembros,tel',
             'edad'=>'required|integer|max:100|gte:11',
+            'plan_id'=>'required|integer|exists:plans,id',
             //'user_id'=>'required|integer|exists:users,id|unique:equipos,user_id',
         ];
     }

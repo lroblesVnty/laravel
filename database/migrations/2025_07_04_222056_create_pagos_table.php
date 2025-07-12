@@ -16,6 +16,7 @@ class CreatePagosTable extends Migration
         Schema::create('pagos', function (Blueprint $table) {
             $table->id();
             $table->timestamp('fecha_pago');
+            $table->timestamp('expira_en')->nullable();
             $table->foreignId('miembro_id')->constrained('miembros');
             $table->foreignId('plan_id')->constrained('plans');
             $table->double('monto',8,2)->nullable(false);

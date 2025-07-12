@@ -18,11 +18,40 @@ class PagoController extends Controller
     }
 
     public function store(Request $request){
-        $request->validate([
-            'fecha_pago'=>'required|date_format:Y-m-d H:i:s',
-            'miembro_id'=>'required|integer|exists:miembros,id'
+        $validated = $request->validate([
+            'miembro_id' => 'required|exists:miembros,id',
+            'plan_id' => 'required|exists:plans,id',
+            'metodo_pago' => 'required|string|max:100',
+            'monto'        => 'required|numeric|min:0',
+            /*'monto'=>['required|numeric|min:0.01',//*funcion para validar que el pago sea mayor al costo del plan
+            function ($attribute, $value, $fail) {
+                    $plan = Plan::find($this->plan_id);
+                    if (!$plan) {
+                        $fail('El plan seleccionado no es válido.');
+                        return;
+                    }
+                    if ($value < $plan->costo) { // Asume que el costo del plan está en la columna 'costo' de tu tabla 'planes'
+                        $fail("El :attribute debe ser mayor o igual al costo del plan (" . $plan->costo . ").");
+                    }
+                }
+            ,]*/
+            
+            
+            // 'fecha_pago' opcional, se maneja en el modelo
         ]);
-        $pago=Pago::create($request->all());
-        return $pago;
+
+        $pago = Pago::create([
+            'miembro_id' => $validated['miembro_id'],
+            'plan_id' => $validated['plan_id'],
+            'metodo_pago' => $validated['metodo_pago'],
+            'monto' => $validated['monto'],
+            // no se necesita agregar fecha_pago ni expira_en aquí
+        ]);
+
+        return response()->json([
+            'message' => 'Pago registrado correctamente',
+            'data' => $pago
+        ], 201);
+
     }    
 }

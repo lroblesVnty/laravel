@@ -19,9 +19,11 @@ class PlanController extends Controller
 
     public function store(Request $request){
         $request->validate([
-            'miembro_id'=>'required|integer|exists:miembros,id|unique:plans,miembro_id',
-            'membresia_id'=>'required|integer|exists:membresias,id',
-            'status'=>'required|string|in:inactivo,activo',
+            'nombre_plan'=>'required|string|max:100|min:4',
+            'descripcion'=>'required|string|max:100|min:3',
+            'frecuencia_pago'=>'required|string|in:semanal,mensual,anual',
+            'costo'=>'required|numeric|digits_between:1,5',
+            'duracion_dias'=>'required|integer|digits_between:1,4',
         ]);
         $plan=Plan::create($request->all());
         return $plan;

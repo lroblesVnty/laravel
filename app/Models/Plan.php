@@ -8,15 +8,16 @@ use Illuminate\Database\Eloquent\Model;
 class Plan extends Model
 {
     use HasFactory;
-    protected $fillable=["miembro_id","membresia_id","status"];
+    protected $fillable=["nombre_plan","descripcion","fecuencia_pago","costo","duracion_dias"];
     protected $hidden = ['created_at', 'updated_at'];
 
     public function miembro(){
         return $this->belongsTo(Miembro::class);
     }
 
-    public function membresia(){
-        return $this->belongsTo(Membresia::class);
+     // Si un plan tiene muchos pagos (relación inversa)
+    public function pagos(){
+        return $this->hasMany(Pago::class);
     }
 
 

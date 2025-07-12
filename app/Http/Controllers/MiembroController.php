@@ -76,33 +76,23 @@ class MiembroController extends Controller{
 
     }
     
-    public function checkStatusPlan($member){
-        $date=today()->format('Y-m-d');
-        $miembro=Miembro::findOrFail($member);
-        //$resp=$miembro->pagos()->where('fecha_pago', '<', $date)->get();
-        /*$resp=DB::table('pagos')
-        ->where('miembro_id', '=', $member)
-        ->whereDate('fecha_pago','<', $date)
-        ->get();*/
-        $resp=DB::table('pagos')
-        //>selectRaw('max(fecha_pago) as lastPayDate')
-        ->select(DB::raw('date_format(max(fecha_pago),"%d-%M-%Y")as lastPayDate'))
-        ->where('miembro_id', '=', $member)
-        ->groupBy('miembro_id')
-        ->havingRaw('DATE(max(fecha_pago))<?', [$date])
-        ->get();
-       
-        setlocale(LC_TIME, 'es_ES.UTF-8'); 
-        Carbon::setLocale('es');
-        //$lastPayDate = Carbon::parse($resp[0]->lastPayDate)->format('d-F-Y');
-       
-        $count = $resp->count();
-        if ($count==0) {
-            return response(['success'=>true,'status'=>'plan activo','miembro'=>$miembro]);
-        }
-        $lastPayDate= Carbon::parse($resp[0]->lastPayDate)->isoFormat('D\-MMMM\-Y');
+    public function checkStatusPlan($id){
+        $miembro=Miembro::findOrFail($id);
+        $expirationDate = $miembro->getSubscriptionExpirationDate();
+        $activePlan = $miembro->getActivePlan();
+        $isActive=false;
+        if ($miembro->activo) {
+            $isActive=true;
+        } 
 
-        return response(['success'=>false,'status'=>'inactivo','lastPayDate'=>$lastPayDate,'miembro'=>$miembro]);
+
+        return response()->json([
+                'miembro' => $miembro,
+                'isActive' => $isActive,
+                'expirationDate' => $expirationDate->format('d/m/Y H:i:s'),
+                'plan' => $activePlan->nombre_plan,
+                //'plan' => $activePlan,
+        ]);
         //return $resp;
 
         //>pagos()->where('fecha_pago', '<', $date)->get()
@@ -121,12 +111,12 @@ class MiembroController extends Controller{
         ->select('miembro_id', DB::raw('MAX(fecha_pago) as lastPayDate'))
         ->groupBy('miembro_id');
 
-$users = DB::table('miembros')
+$miembros = DB::table('miembros')
 ->leftjoinSub($latestPosts, 'status', function ($join) {
  $join->on('miembros.id', '=', 'status.miembro_id');
 })->get();
 //*poner un if con select bajo el join
-            return $users; 
+            return $miembros; 
        /*  $latestPosts = DB::table('pagos')
         ->select('miembro_id', DB::raw('MAX(fecha_pago) as lastPayDate'))
         ->groupBy('miembro_id'); */
@@ -160,6 +150,32 @@ $users = DB::table('miembros')
             ])->get(['id', 'nombre', 'tel', 'edad']);
 
        
+    }
+
+     /**
+     * Muestra el estado de la suscripción de un usuario.
+     *
+     * @param  \App\Models\Miembro  $miembro
+     * @return \Illuminate\Http\Response
+     */
+    public function showSubscriptionStatus(Miembro $miembro){
+        if ($miembro->hasActiveSubscription()) {
+            $expirationDate = $miembro->getSubscriptionExpirationDate();
+            $activePlan = $miembro->getActivePlan();
+
+            return response()->json([
+                'miembro' => $miembro,
+                'isActive' => true,
+                'expirationDate' => $expirationDate->format('d/m/Y H:i:s'),
+                'plan' => $activePlan->nombre_plan,
+                //'plan' => $activePlan,
+            ]);
+        } else {
+            return response()->json([
+                'miembro' => $miembro,
+                'isActive' => false,
+            ]);
+        }
     }
 
 }

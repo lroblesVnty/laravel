@@ -74,10 +74,10 @@ Route::post("/register",[UserController::class,'register']);
 Route::post("login",[UserController::class,'login']);
 Route::get("users",[UserController::class,'index']);
 
-Route::get("miembro/{id}/status",[MiembroController::class,'checkStatusPlan']);
+//Route::get("miembro/{id}/status",[MiembroController::class,'checkStatusPlan']);
 Route::get("status/miembro",[MiembroController::class,'statusMembers']);
-
-Route::get("miembros/plan",[MiembroController::class,'plan']);
+Route::get("miembro/{id}/statusPlan",[MiembroController::class,'checkStatusPlan']);
+Route::get("miembro/{miembro}/status",[MiembroController::class,'showSubscriptionStatus']);//*el parametro miembro debe coincidir con el del controlador
 
 
 
