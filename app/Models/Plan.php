@@ -11,8 +11,8 @@ class Plan extends Model
     protected $fillable=["nombre_plan","descripcion","fecuencia_pago","costo","duracion_dias"];
     protected $hidden = ['created_at', 'updated_at'];
 
-    public function miembro(){
-        return $this->belongsTo(Miembro::class);
+    public function miembros(){
+        return $this->hasMany(Miembro::class);
     }
 
      // Si un plan tiene muchos pagos (relación inversa)

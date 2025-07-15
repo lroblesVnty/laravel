@@ -99,24 +99,22 @@ class MiembroController extends Controller{
     }
 
     public function statusMembers(){
-        DB::statement("SET SQL_MODE=''");
-        $members = DB::table('pagos')
-        ->rightjoin('miembros', 'miembros.id', '=', 'pagos.miembro_id')
-        ->select('miembros.id','nombre','edad','tel',DB::raw('if((DATE(max(pagos.fecha_pago))<DATE(NOW())),"inactivo",if(pagos.fecha_pago IS NULL,"inactivo","activo")) as statusPlan'))
-        ->groupByRaw('miembros.id,nombre,edad,tel')
-        ->get();
-        $meb=$members->groupBy('miembro_id','miembros.id','nombre');
-        //https://stackoverflow.com/questions/40917189/laravel-syntax-error-or-access-violation-1055-error
-        $latestPosts = DB::table('pagos')
-        ->select('miembro_id', DB::raw('MAX(fecha_pago) as lastPayDate'))
-        ->groupBy('miembro_id');
+       
+        //return Miembro::with('plan:id,nombre_plan')->get();
+       
 
-$miembros = DB::table('miembros')
-->leftjoinSub($latestPosts, 'status', function ($join) {
- $join->on('miembros.id', '=', 'status.miembro_id');
-})->get();
-//*poner un if con select bajo el join
-            return $miembros; 
+
+        
+        return Miembro::all()->map(function ($miembro) {
+            $miembro->plan=$miembro->getActivePlan();
+            //$activePlan = $miembro->getActivePlan();
+            //$miembro->plan=$activePlan['nombre_plan'];
+            $miembro->expirationDate=$miembro->getSubscriptionExpirationDate();
+            return $miembro;
+        });
+
+       // return Miembro::with('plan')->get();
+
        /*  $latestPosts = DB::table('pagos')
         ->select('miembro_id', DB::raw('MAX(fecha_pago) as lastPayDate'))
         ->groupBy('miembro_id'); */
