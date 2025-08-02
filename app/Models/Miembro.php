@@ -10,7 +10,7 @@ class Miembro extends Model
 {
     use HasFactory;
     protected $fillable=["nombre","apellido","tel","edad","plan_id"];
-    protected $hidden = ['created_at', 'updated_at'];
+    protected $hidden = ['created_at', 'updated_at', 'plan_id'];
     protected $casts = [
     'activo' => 'boolean',
     ];
@@ -77,5 +77,15 @@ class Miembro extends Model
         }
 
         return null;
+    }
+
+    /**
+     * Get the details of plan even is not active.
+     *
+     * @return Plan
+     */
+    public function getPlan(): ?Plan{ //?indica que puede devolver null o una instancia de Plan
+
+        return $this->plan; // Accede a la relación 'plan' del miembro
     }
 }

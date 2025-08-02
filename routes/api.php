@@ -61,7 +61,7 @@ Route::apiResource('pago',PagoController::class)->except([
 ]); 
 
 
-Route::get('plan',[PlanController::class,'index']);
+Route::get('plans',[PlanController::class,'index']);
 Route::post('plan',[PlanController::class,'store']);
 
 //Route::get("estudiantes",[EstudiantesController::class,'index']);

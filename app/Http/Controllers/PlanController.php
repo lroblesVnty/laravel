@@ -8,9 +8,9 @@ use Illuminate\Http\Request;
 class PlanController extends Controller
 {
     public function index(){
-        /*$planes=Plan::all();
-        return $planes;*/
-        $planes=Plan::with('miembro:id,nombre')->get();
+        $planes=Plan::orderBy('nombre_plan')->get();
+        //return $planes;
+        //$planes=Plan::with('miembro:id,nombre')->get();
         //$planes=Plan::with('miembro:id,nombre')->get(['id','status','membresia_id','miembro_id']);
        // $ventas=Venta::with('productos','user')->get(['id','created_at AS fecha_venta','total','user_id']);
        

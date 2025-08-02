@@ -54,18 +54,21 @@ class MiembroController extends Controller{
             $request->validate([
                 'nombre'=>'required|string|max:150|min:3|regex:/^[a-zA-ZÁ-ÿ\s]+$/',
                 'edad'=>'required|integer|max:100|gte:11',
+                'plan_id'=>'required|integer|exists:plans,id',
             ]);
         }else{
             $request->validate([
                 'nombre'=>'required|string|max:150|min:3|regex:/^[a-zA-ZÁ-ÿ\s]+$/',
                 'tel'=>'required|integer|digits:10|unique:miembros,tel',
                 'edad'=>'required|integer|max:100|gte:11',
+                'plan_id'=>'required|integer|exists:plans,id',
             ]);
         }
        
         $miembro->nombre=$request->nombre;
         $miembro->edad=$request->edad;
         $miembro->tel=$request->tel;
+        $miembro->plan_id=$request->plan_id;
         $miembro->save();
        
         //return  $miembro->getChanges();
@@ -106,9 +109,8 @@ class MiembroController extends Controller{
 
         
         return Miembro::all()->map(function ($miembro) {
-            $miembro->plan=$miembro->getActivePlan();
-            //$activePlan = $miembro->getActivePlan();
-            //$miembro->plan=$activePlan['nombre_plan'];
+            //$miembro->plan=$miembro->getActivePlan();
+            $miembro->plan=$miembro->getPlan();
             $miembro->expirationDate=$miembro->getSubscriptionExpirationDate();
             return $miembro;
         });
