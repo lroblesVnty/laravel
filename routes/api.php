@@ -12,6 +12,7 @@ use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\ProductoVentaController;
 use App\Http\Controllers\ProveedorController;
 use App\Http\Controllers\VentaController;
+use App\Http\Controllers\VisitaController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -57,6 +58,10 @@ Route::apiResource('membresia',MembresiaController::class)->except([
 ]);
 
 Route::apiResource('pago',PagoController::class)->except([
+    'create', 'edit'
+]);
+
+Route::apiResource('visitas',VisitaController::class)->except([
     'create', 'edit'
 ]); 
 

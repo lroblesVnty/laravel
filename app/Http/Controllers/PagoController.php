@@ -21,7 +21,7 @@ class PagoController extends Controller
         $validated = $request->validate([
             'miembro_id' => 'required|exists:miembros,id',
             'plan_id' => 'required|exists:plans,id',
-            'metodo_pago' => 'required|string|max:100',
+            'metodo_pago' => 'required|string|max:100|in:Efectivo,Tarjeta,Transferencia',
             'monto'        => 'required|numeric|min:0',
             /*'monto'=>['required|numeric|min:0.01',//*funcion para validar que el pago sea mayor al costo del plan
             function ($attribute, $value, $fail) {

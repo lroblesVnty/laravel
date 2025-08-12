@@ -108,7 +108,7 @@ class MiembroController extends Controller{
 
 
         
-        return Miembro::all()->map(function ($miembro) {
+        return Miembro::whereNotIn('id', [10])->get()->map(function ($miembro) {
             //$miembro->plan=$miembro->getActivePlan();
             $miembro->plan=$miembro->getPlan();
             $miembro->expirationDate=$miembro->getSubscriptionExpirationDate();

@@ -23,6 +23,7 @@ class Pago extends Model
 
 
     protected static function booted(){
+        //**FUNCION PARA CALCULAR LA FECHA DE EXPIRACION */
         static::creating(function (Pago $payment) {
             if (!$payment->fecha_pago) {
                 $payment->fecha_pago = Carbon::now();

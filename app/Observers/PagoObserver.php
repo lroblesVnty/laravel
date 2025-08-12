@@ -7,6 +7,7 @@ use Illuminate\Validation\ValidationException;
 
 
 class PagoObserver{
+    //**se tiene que registrar en el archivo EventServiceProvider.php */
 
      /**
      * Handle the Pago "creating" event.
