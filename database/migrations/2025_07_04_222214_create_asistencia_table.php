@@ -16,6 +16,7 @@ class CreateAsistenciaTable extends Migration
         Schema::create('asistencia', function (Blueprint $table) {
              $table->id();
             $table->foreignId('miembro_id')->constrained('miembros');
+             $table->timestamp('fecha')->nullable(false);
             $table->time('hora_entrada')->nullable(false);
             $table->time('hora_salida')->nullable(true);
             $table->string('notas');

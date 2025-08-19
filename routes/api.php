@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\AsistenciaController;
 use App\Http\Controllers\EquipoController;
 use App\Http\Controllers\EstudiantesController;
 use App\Http\Controllers\FileController;
@@ -63,7 +64,12 @@ Route::apiResource('pago',PagoController::class)->except([
 
 Route::apiResource('visitas',VisitaController::class)->except([
     'create', 'edit'
+]);
+
+Route::apiResource('asistencia',AsistenciaController::class)->except([
+    'create', 'edit'
 ]); 
+
 
 
 Route::get('plans',[PlanController::class,'index']);

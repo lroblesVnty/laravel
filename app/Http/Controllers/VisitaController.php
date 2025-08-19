@@ -23,6 +23,7 @@ class VisitaController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request){
+         //TODO adaptar la tabla de visitas, falta agregar el campo de la hora de salida de la visita
         $validated = $request->validate([
             'usuario' => 'required|string|max:100',
             'visited_at' => 'required|date',
