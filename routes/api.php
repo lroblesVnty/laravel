@@ -62,6 +62,8 @@ Route::apiResource('pago',PagoController::class)->except([
     'create', 'edit'
 ]);
 
+Route::get('visitas/fecha',[VisitaController::class,'getVisitasByDate']);
+
 Route::apiResource('visitas',VisitaController::class)->except([
     'create', 'edit'
 ]);

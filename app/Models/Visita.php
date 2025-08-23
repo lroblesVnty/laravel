@@ -9,8 +9,8 @@ class Visita extends Model
 {
     use HasFactory;
 
-    protected $fillable=["usuario","visited_at"];
-    protected $dates = ['visited_at'];
+    protected $fillable=["usuario","fecha_visita","hora_entrada","hora_salida"];
+    protected $dates = ['fecha_visita'];
     protected $hidden = ['created_at', 'updated_at'];
     public $monto,$metodo_pago; // atributos temporales
 
@@ -23,6 +23,6 @@ class Visita extends Model
      */
     protected function serializeDate(\DateTimeInterface $date)
     {
-        return $date->format('d/m/Y H:i:s');
+        return $date->format('d/m/Y');
     }
 }

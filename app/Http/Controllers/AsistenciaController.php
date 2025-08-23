@@ -25,6 +25,7 @@ class AsistenciaController extends Controller
     public function store(Request $request){
         //TODO FALTA AGREGAR LA FECHA
         $validated = $request->validate([
+            'fecha' => 'required|date',
             'miembro_id' => 'required|exists:miembros,id',
             'hora_entrada' => 'required|date_format:H:i:s',
             'hora_salida' => 'required|date_format:H:i:s|after:hora_entrada',

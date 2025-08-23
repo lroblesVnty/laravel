@@ -16,6 +16,20 @@ class PlanesSeeder extends Seeder
     public function run(){
         DB::table('plans')->insert([
             [
+                'nombre_plan' => 'Visita',
+                'descripcion' => 'Visita de un Usuario',
+                'frecuencia_pago' => 'visita',
+                'costo' => 30,
+                'duracion_dias' => 1,
+            ],
+            [
+                'nombre_plan' => 'Básico Mensual',
+                'descripcion' => 'Acceso limitado a funcionalidades principales',
+                'frecuencia_pago' => 'mensual',
+                'costo' => 350,
+                'duracion_dias' => 30,
+            ],
+            [
                 'nombre_plan' => 'Básico Semanal',
                 'descripcion' => 'Acceso limitado a funcionalidades principales',
                 'frecuencia_pago' => 'semanal',
@@ -64,13 +78,7 @@ class PlanesSeeder extends Seeder
                 'costo' => 149,
                 'duracion_dias' => 30,
             ],
-            [
-                'nombre_plan' => 'Visita',
-                'descripcion' => 'Visita de un Usuario',
-                'frecuencia_pago' => null,
-                'costo' => 30,
-                'duracion_dias' => 1,
-            ],
+           
         ]);
 
     }

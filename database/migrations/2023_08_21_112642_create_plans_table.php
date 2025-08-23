@@ -17,7 +17,7 @@ class CreatePlansTable extends Migration
             $table->id();
             $table->string('nombre_plan')->nullable(false)->unique();
             $table->string('descripcion')->nullable(false);
-            $table->enum('frecuencia_pago', ['semanal', 'mensual', 'anual']);
+            $table->enum('frecuencia_pago', ['semanal', 'mensual', 'anual','visita']);
             $table->double('costo',8,2)->nullable(false);
             $table->integer('duracion_dias')->nullable(false);
             $table->timestamps();

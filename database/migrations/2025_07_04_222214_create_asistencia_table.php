@@ -14,12 +14,12 @@ class CreateAsistenciaTable extends Migration
     public function up()
     {
         Schema::create('asistencia', function (Blueprint $table) {
-             $table->id();
-            $table->foreignId('miembro_id')->constrained('miembros');
-             $table->timestamp('fecha')->nullable(false);
+            $table->id();
+            $table->date('fecha')->nullable(false);
             $table->time('hora_entrada')->nullable(false);
             $table->time('hora_salida')->nullable(true);
-            $table->string('notas');
+            $table->string('notas')->nullable();
+            $table->foreignId('miembro_id')->constrained('miembros');
             $table->timestamps();
         });
     }

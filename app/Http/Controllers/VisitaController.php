@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Visita;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+
 
 class VisitaController extends Controller
 {
@@ -23,17 +26,20 @@ class VisitaController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request){
-         //TODO adaptar la tabla de visitas, falta agregar el campo de la hora de salida de la visita
         $validated = $request->validate([
             'usuario' => 'required|string|max:100',
-            'visited_at' => 'required|date',
+            'fecha_visita' => 'required|date',
+            'hora_entrada' => 'required|date_format:H:i:s',
+            'hora_salida' => 'required|date_format:H:i:s|after:hora_entrada',
             'metodo_pago' => 'required|string|max:100|in:Efectivo,Tarjeta,Transferencia',
             'monto'        => 'required|numeric|min:0',
         ]);
 
         $visita = new Visita([
             'usuario' => $validated['usuario'],
-            'visited_at' => $validated['visited_at'],
+            'fecha_visita' => $validated['fecha_visita'],
+            'hora_entrada' => $validated['hora_entrada'],
+            'hora_salida' => $validated['hora_salida'],
         ]);
 
         $visita->monto = $validated['monto']; // atributo temporal
@@ -60,14 +66,34 @@ class VisitaController extends Controller
 
     }
 
+    public function getVisitasByDate(Request $request){
+        //Log::info('Entrando al método getVisitasByDate');
+        $request->validate([
+            'fecha' => 'nullable|date_format:d-m-Y',
+        ]);
+        $input = $request->input('fecha');
+
+        $fecha = $input
+            ? Carbon::createFromFormat('d-m-Y', $input)->format('Y-m-d')
+            : Carbon::today()->format('Y-m-d');
+        $visitas = Visita::whereDate('fecha_visita', $fecha)->get();
+
+        if ($visitas->isEmpty()) {
+            return response()->json(['message' => 'No hay visitas para esa fecha'], 404);
+        }
+
+        return response()->json($visitas, 200);
+    }
+
     /**
      * Display the specified resource.
      *
      * @param  \App\Models\Visita  $visita
      * @return \Illuminate\Http\Response
      */
-    public function show(Visita $visita)
-    {
+    public function show(Visita $visita){
+        //Log::info('Entrando al método show'.$visita);
+        return Visita::findOrFail($visita->id);
         //
     }
 
@@ -93,4 +119,6 @@ class VisitaController extends Controller
     {
         //
     }
+
+   
 }

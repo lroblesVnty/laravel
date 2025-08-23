@@ -17,7 +17,9 @@ class CreateVisitasTable extends Migration
             $table->id();
             $table->string('usuario');
             //$table->foreignId('miembro_id')->constrained('miembros');
-            $table->timestamp('visited_at')->nullable();
+            $table->date('fecha_visita');
+             $table->time('hora_entrada')->nullable(false);
+            $table->time('hora_salida')->nullable(true);
             $table->timestamps();
         });
     }

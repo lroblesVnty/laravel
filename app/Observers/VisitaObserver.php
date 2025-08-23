@@ -15,8 +15,8 @@ class VisitaObserver{
      */
     public function created(Visita $visita){
         Pago::create([
-            'miembro_id' => 10,
-            'plan_id' => 10,
+            'miembro_id' => 1,
+            'plan_id' => 1,
             'metodo_pago' => $visita->metodo_pago,
             'monto' => $visita->monto,
             // no se necesita agregar fecha_pago ni expira_en aquí
