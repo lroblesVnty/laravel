@@ -63,6 +63,7 @@ Route::apiResource('pago',PagoController::class)->except([
 ]);
 
 Route::get('visitas/fecha',[VisitaController::class,'getVisitasByDate']);
+Route::get('visitas/{visita}/cerrar',[VisitaController::class,'closeVisita']);
 
 Route::apiResource('visitas',VisitaController::class)->except([
     'create', 'edit'

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Visita;
+use App\Services\VisitaService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -30,7 +31,7 @@ class VisitaController extends Controller
             'usuario' => 'required|string|max:100',
             'fecha_visita' => 'required|date',
             'hora_entrada' => 'required|date_format:H:i:s',
-            'hora_salida' => 'required|date_format:H:i:s|after:hora_entrada',
+            //'hora_salida' => 'nullable|date_format:H:i:s|after:hora_entrada',
             'metodo_pago' => 'required|string|max:100|in:Efectivo,Tarjeta,Transferencia',
             'monto'        => 'required|numeric|min:0',
         ]);
@@ -39,7 +40,7 @@ class VisitaController extends Controller
             'usuario' => $validated['usuario'],
             'fecha_visita' => $validated['fecha_visita'],
             'hora_entrada' => $validated['hora_entrada'],
-            'hora_salida' => $validated['hora_salida'],
+            'hora_salida' => null,
         ]);
 
         $visita->monto = $validated['monto']; // atributo temporal
@@ -120,5 +121,23 @@ class VisitaController extends Controller
         //
     }
 
+
+     /**
+     * cerrar visita, registrar hora de salida, usando un servicio
+     *
+     * @param  \App\Models\Visita  $visita
+     * @return \Illuminate\Http\Response
+     */
+    public function closeVisita(Visita $visita, VisitaService $visitaService){
+        $resultado = $visitaService->cerrarVisita($visita);
+
+        return response()->json([
+            'message' => $resultado['message'],
+            'data' => $resultado['data']
+        ], $resultado['status'] ? 200 : 400);
+    }
+
+
+   
    
 }
