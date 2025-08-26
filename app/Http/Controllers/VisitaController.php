@@ -29,7 +29,7 @@ class VisitaController extends Controller
     public function store(Request $request){
         $validated = $request->validate([
             'usuario' => 'required|string|max:100',
-            'fecha_visita' => 'required|date',
+            'fecha_visita' => 'required|date_format:d-m-Y',
             'hora_entrada' => 'required|date_format:H:i:s',
             //'hora_salida' => 'nullable|date_format:H:i:s|after:hora_entrada',
             'metodo_pago' => 'required|string|max:100|in:Efectivo,Tarjeta,Transferencia',
@@ -134,7 +134,7 @@ class VisitaController extends Controller
         return response()->json([
             'message' => $resultado['message'],
             'data' => $resultado['data']
-        ], $resultado['status'] ? 200 : 400);
+        ], $resultado['status'] ? 200 : 409);
     }
 
 
