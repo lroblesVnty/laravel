@@ -24,6 +24,10 @@ class Miembro extends Model
         return $this->hasMany(Pago::class);
     }
 
+    public function asistencias(){
+        return $this->hasMany(Asistencia::class);
+    }
+
      /**
      * Check if the user's last payment is not expired.
      *

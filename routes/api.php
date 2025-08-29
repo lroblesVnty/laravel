@@ -69,6 +69,8 @@ Route::apiResource('visitas',VisitaController::class)->except([
     'create', 'edit'
 ]);
 
+Route::get('asistencia/fecha',[AsistenciaController::class,'getAsistenciaByDate']);
+Route::get('asistencia/{asistencia}/cerrar',[AsistenciaController::class,'closeAsistencia']);
 Route::apiResource('asistencia',AsistenciaController::class)->except([
     'create', 'edit'
 ]); 
