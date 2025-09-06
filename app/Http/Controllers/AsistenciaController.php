@@ -6,6 +6,7 @@ use App\Models\Asistencia;
 use App\Services\AsistenciaService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class AsistenciaController extends Controller
 {
@@ -111,5 +112,30 @@ class AsistenciaController extends Controller
             'message' => $resultado['message'],
             'data' => $resultado['data']
         ], $resultado['status'] ? 200 : 409);
+    }
+
+     /**
+     * Display the specified resource by miembro.
+     *
+     * @param  \App\Models\Asistencia  $asistencia
+     * @return \Illuminate\Http\Response
+     */
+    public function asistenciaByMiembroToDay($miembro){
+        
+         // Obtener la fecha actual
+        $hoy = Carbon::today();
+        Log::info('fechaHoy '. $hoy);
+        // verificar asistencia para el miembro y la fecha de hoy
+        $asistencia = Asistencia::where('miembro_id', $miembro)
+            ->whereDate('fecha', $hoy)
+            ->first();
+            //->makeHidden('miembro_id');
+
+        if (!$asistencia) {
+            return response()->json(['message' => 'No hay asistencias para este miembro en la fecha actual'], 404);
+        }
+
+
+        return response()->json($asistencia, 200);
     }
 }
