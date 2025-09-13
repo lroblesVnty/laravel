@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
@@ -55,10 +56,31 @@ class UserController extends Controller{
         }
         /** @var \App\Models\User $user **/
         $user=Auth::user();
-        $token=$user->createToken('auth-token')->plainTextToken;
-        $cookie=cookie('cookie_token',$token,60*24); //60*24= expiracion
+        $tokenResult = $user->createToken('auth-token',['*'],Carbon::now()->addMinutes(30));
+       
 
-        return response()->json(["success"=>true,"msg"=>"Login exitoso","data"=>auth()->user(),"access_token"=>$token],200)->withCookie($cookie);
+        $tokenPlainText = $tokenResult->plainTextToken; // El token para el cliente
+        //$expiresAt =$tokenResult->accessToken->expires_at;//!en esta version de laravel no tiene el campo expires_at
+        $expiresAt = Carbon::now()->addMinutes(30); // Establecer la
+        
+        /*$tokenResult->accessToken->expires_at = Carbon::now()->addMinutes(30);
+        $tokenResult->accessToken->save();*/
+
+
+        $cookie = cookie('cookie_token', $tokenPlainText, 60 * 24);
+
+
+       //? $rolesById = $user->getRoleNames()->toArray();
+        
+        return response()->json([
+            'status'=>true,
+            'message'=>'Sesion iniciada correctamente',
+            'data'=>$user,
+            'expires_at'=>$expiresAt,
+            'access_token'=>$tokenPlainText,
+            //'expires_at' =>$expiresAt ? Carbon::parse($expiresAt)->toDateTimeString() : null,
+
+        ])->withCookie($cookie); 
 
     
     }
