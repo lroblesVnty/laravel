@@ -16,9 +16,9 @@ class Kernel extends ConsoleKernel{
      * @param  \Illuminate\Console\Scheduling\Schedule  $schedule
      * @return void
      */
-    protected function schedule(Schedule $schedule)
-    {
+    protected function schedule(Schedule $schedule){
         // $schedule->command('inspire')->hourly();
+         $schedule->command('memberships:expire')->daily();
     }
 
     /**
