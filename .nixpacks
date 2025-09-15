@@ -1,0 +1,15 @@
+{
+  "phases": {
+    "setup": {
+      "nixPkgs": [
+        "php-with-extensions"
+      ]
+    },
+    "install": {
+      "cmds": [
+        "php-with-extensions --extensions=bcmath --install",
+        "composer install --no-dev --no-interaction --prefer-dist"
+      ]
+    }
+  }
+}
