@@ -58,13 +58,13 @@ class Miembro extends Model
      *
      * @return Carbon|null The expiration date as a Carbon instance, or null if no active subscription.
      */
-    public function getSubscriptionExpirationDate(): ?Carbon{ //?indica que puede devolver null o una instancia de Carbon
+    public function getSubscriptionExpirationDate(): ?string{ //?indica que puede devolver null o una instancia de Carbon
     
         // Obtiene el último pago.
         $lastPayment = $this->pagos()->latest('fecha_pago')->first();
 
         // Retorna la fecha de vencimiento si existe, de lo contrario, null.
-        return $lastPayment ? $lastPayment->expira_en : null;
+        return $lastPayment ? $lastPayment->expira_en->format('d/m/Y') : null;
     }
 
     /**

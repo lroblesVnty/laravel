@@ -4,7 +4,7 @@
 # This block of code runs the Laravel scheduler every minute
 while true
 do
-  echo "[CRON] Ejecutando scheduler: $(date)" >> storage/logs/cron.log
-  php artisan schedule:run --verbose --no-interaction >> storage/logs/cron.log 2>&1
+  echo "[CRON] Ejecutando scheduler: $(date)" | tee -a storage/logs/cron.log
+  php artisan schedule:run --verbose --no-interaction 2>&1 | tee -a storage/logs/cron.log
   sleep 60
 done
