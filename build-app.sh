@@ -12,13 +12,13 @@ php artisan config:cache
 php artisan route:cache
 php artisan view:cache
 
-# Comportamiento según servicio
+# Cronjob o servidor web según ROLE
 if [ "$ROLE" = "cron" ]; then
   echo "[INIT] Iniciando cronjob..."
   chmod +x ./run-cron.sh
   ./run-cron.sh
 else
   echo "[INIT] Iniciando servidor web Laravel..."
-  php -S 0.0.0.0:$PORT -t public
+  php artisan serve --host=0.0.0.0 --port=$PORT
 fi
 
