@@ -9,3 +9,4 @@ if [ "$ROLE" = "cron" ]; then
     php artisan schedule:run --verbose --no-interaction 2>&1 | tee -a storage/logs/cron.log
     sleep 60
   done
+fi
