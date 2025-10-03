@@ -12,9 +12,13 @@ php artisan config:cache
 php artisan route:cache
 php artisan view:cache
 
-# Cron en segundo plano
-chmod +x ./run-cron.sh
-./run-cron.sh &
+# Comportamiento según servicio
+if [ "$ROLE" = "cron" ]; then
+  echo "[INIT] Iniciando cronjob..."
+  chmod +x ./run-cron.sh
+  ./run-cron.sh
+else
+  echo "[INIT] Iniciando servidor web Laravel..."
+  php -S 0.0.0.0:$PORT -t public
+fi
 
-# Inicia Laravel
-php -S 0.0.0.0:8080 -t public
