@@ -56,7 +56,8 @@ class UserController extends Controller{
         }
         /** @var \App\Models\User $user **/
         $user=Auth::user();
-        $tokenResult = $user->createToken('auth-token',['*'],Carbon::now()->addMinutes(30));
+        //$tokenResult = $user->createToken('auth-token',['*'],Carbon::now()->addMinutes(30));
+        $tokenResult = $user->createToken('auth-token',['*']);
        
 
         $tokenPlainText = $tokenResult->plainTextToken; // El token para el cliente

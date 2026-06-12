@@ -8,6 +8,8 @@ use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Throwable;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Illuminate\Auth\AuthenticationException;
+use Illuminate\Http\Request;
 
 class Handler extends ExceptionHandler
 {
@@ -49,6 +51,29 @@ class Handler extends ExceptionHandler
             }
         });
     }
+
+
+        
+   /**
+     * Convert an authentication exception into a response.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Auth\AuthenticationException  $exception
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    protected function unauthenticated($request, AuthenticationException $exception)
+    {
+        if ($request->expectsJson()) {
+            return response()->json([
+                'status'  => 'error',
+                'message' => 'Tu sesión ha expirado o no tienes un token válido.',
+                //'code'    => 401
+            ], 401);
+        }
+
+        return redirect()->guest($exception->redirectTo($request) ?? route('login'));
+    }
+
 
     
     

@@ -42,6 +42,7 @@ class StoreMiembroRequest extends FormRequest
     {
         return [
             'nombre.regex' => 'El campo nombre solo debe contener letras',//message solo para un campo
+            'tel.unique' => 'El número de teléfono ya está registrado',//message solo para un campo
             //'min' => 'El valor del campo :attribute debe ser mínimo de :min',
         ];
     }

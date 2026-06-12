@@ -50,9 +50,13 @@ Route::apiResource('equipo',EquipoController::class)->except([
     'create', 'edit'
 ]);
 
-Route::apiResource('miembro',MiembroController::class)->except([
+/*Route::apiResource('miembro',MiembroController::class)->except([
     'create', 'edit'
-]); 
+]); */
+
+Route::apiResource('miembro', MiembroController::class)
+    ->only(['index', 'show']);
+
 
 Route::apiResource('membresia',MembresiaController::class)->except([
     'create', 'edit'
@@ -105,6 +109,18 @@ Route::apiResource('file',FileController::class)->except([
 ]); 
 
 
+
+
+/* 
+Route::apiResource('miembro', MiembroController::class)
+    ->only(['store', 'update', 'destroy'])
+    ->middleware('auth:sanctum'); */
+
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::apiResource('miembro', MiembroController::class)
+        ->only(['store', 'update', 'destroy']);
+});
 
 Route::group(['middleware'=>["auth:sanctum"]],function(){
     Route::get('user-profile',[UserController::class,'userProfile']);
